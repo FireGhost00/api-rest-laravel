@@ -25,3 +25,14 @@ return view('pruebas', array(
 
 Route::get('/animales','PruebasController@index');
 Route::get('/test-orm','PruebasController@testOrm');
+
+
+
+    // Rutas de pruebas
+    Route::get('/usuario/pruebas','UserController@pruebas');
+    Route::get('/categoria/pruebas','CategoryController@pruebas');
+    Route::get('/entradas/pruebas','PostrController@pruebas');
+
+       // Rutas del controlador de usuarios
+       Route::post('/api/register', 'UserController@register');
+       Route::post('/api/login', 'UserController@login');

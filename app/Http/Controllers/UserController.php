@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 
+
 class UserController extends Controller
 {
     public function pruebas(Request $request){
@@ -49,7 +50,7 @@ class UserController extends Controller
 
 
             //cifrar la contraseña
-          $pwd =  password_hash($params->password,PASSWORD_BCRYPT,['cost'=>4]);
+          $pwd =  hash('sha256',$params->password);
          
 
             //crear el usuario
@@ -86,6 +87,13 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
-        return "Accion de login de usuarios";
+        $jwtAuth = new \JwtAuth();
+
+        $email = 'ngom@gmail.com';
+        $password = 'nelson';
+        $pwd =  hash('sha256', $password);
+
+
+        return response()->json( $jwtAuth->signup($email,$pwd,true),200);
     }
 }

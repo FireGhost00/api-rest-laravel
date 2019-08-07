@@ -136,37 +136,35 @@ class UserController extends Controller
         $jwtAuth = new \JwtAuth();
         $checkToken = $jwtAuth->checkToken($token);
 
-             
-            // recoger los datos por post
 
-            $json = $request->input('json', null);
-            $params_array = json_decode($json, true);
-            // $json = $request->input('json', null);
+        // recoger los datos por post
 
-            // $params_array = json_decode($json, true);
+        $json = $request->input('json', null);
+        $params_array = json_decode($json, true);
+
 
         if ($checkToken && !empty($params_array)) {
-         
-           
+
+
             //sacar usuario identificado
             $user = $jwtAuth->checkToken($token, true);
             // validar los datos
             $validate =  \Validator::make($params_array, [
                 'name'       => 'required|alpha',
                 'surname'    => 'required|alpha',
-                'email'      => 'required|email|unique:users,'.$user->sub
-                
+                'email'      => 'required|email|unique:users,' . $user->sub
+
             ]);
 
             // Quitar los datos que no quiero actualizar
-                unset($params_array['id']);
-                unset($params_array['role']);
-                unset($params_array['password']);
-                unset($params_array['create_at']);
-                unset($params_array['remember_token']);
-       
+            unset($params_array['id']);
+            unset($params_array['role']);
+            unset($params_array['password']);
+            unset($params_array['create_at']);
+            unset($params_array['remember_token']);
+
             // Actualizar usuario en bd
-                $user_update = User::Where('id',$user->sub)->update($params_array);
+            $user_update = User::Where('id', $user->sub)->update($params_array);
 
             // Devolver array con resultado
 
@@ -174,15 +172,46 @@ class UserController extends Controller
                 'code' => 200,
                 'status' => 'success',
                 'user' => $user,
-                'change' => $params_array 
+                'change' => $params_array
             );
-
         } else {
-           $data = array(
-               'code' => 400,
-               'status' => 'error',
-               'message' => 'El usuario no esta identificado.'
-           );
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'El usuario no esta identificado.'
+            );
+        }
+        return response()->json($data, $data['code']);
+    }
+
+    public function upload(Request $request)
+    {
+        // Recoger datos de la peticion
+        $image = $request->file('file0');
+        
+        //validacion de la imagen
+        $validate = \Validator::make($request->all(),[
+            'file0' => 'required|image|mimes:jpg,jpeg,png,gif'
+        ]);
+
+        // Guardar imagen
+
+        if (!$image || $validate->fails()) {
+            $data = array(
+                'code' => 400,
+                'status' => 'error',
+                'message' => 'Error al no subir imagen'
+            );
+        } else {
+            $image_name = time() . $image->getClientOriginalName();
+            \Storage::disk('users')->put($image_name, \File::get($image));
+
+            $data = array(
+                'code' => 200,
+                'status' => 'success',
+                'image' => $image_name
+            );
+            
         }
         return response()->json($data, $data['code']);
     }

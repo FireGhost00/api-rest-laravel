@@ -43,7 +43,9 @@ return view('pruebas', array(
        Route::get('/api/user/detail/{id}','UserController@detail');
 
        // Rutas del controlador de categoria
-    //    Route::get('/api/category/index','CategoryController@index');
       Route::resource('/api/category', 'CategoryController');
+
+       // Rutas del controlador de entradas
+      Route::resource('/api/post', 'PostController');
 
      

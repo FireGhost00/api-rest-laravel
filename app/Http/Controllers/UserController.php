@@ -9,10 +9,10 @@ use App\User;
 
 class UserController extends Controller
 {
-    public function pruebas(Request $request)
-    {
-        return "Accion de pruebas de USER_CONTROLLER";
-    }
+    // public function pruebas(Request $request)
+    // {
+    //     return "Accion de pruebas de USER_CONTROLLER";
+    // }
 
 
     public function register(Request $request)

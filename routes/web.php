@@ -24,8 +24,8 @@ return view('pruebas', array(
 ));
 });
 
-Route::get('/animales','PruebasController@index');
-Route::get('/test-orm','PruebasController@testOrm');
+// Route::get('/animales','PruebasController@index');
+// Route::get('/test-orm','PruebasController@testOrm');
 
 
 
@@ -41,3 +41,9 @@ Route::get('/test-orm','PruebasController@testOrm');
        Route::post('/api/user/upload', 'UserController@upload')->middleware(ApiAuthMiddleware::class);
        Route::get('/api/user/avatar/{filename}','UserController@getImage');
        Route::get('/api/user/detail/{id}','UserController@detail');
+
+       // Rutas del controlador de categoria
+    //    Route::get('/api/category/index','CategoryController@index');
+      Route::resource('/api/category', 'CategoryController');
+
+     

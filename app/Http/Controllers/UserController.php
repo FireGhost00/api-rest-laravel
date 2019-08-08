@@ -239,7 +239,7 @@ return response()->json($data,$data['code']);
 
         if(is_object($user)){
             $data = array(
-                'code' => 200,
+                'code' => 200,F
                 'status' => 'success',
                 'image' => $user
             );
